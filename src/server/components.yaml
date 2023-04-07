@@ -1,0 +1,56 @@
+components:
+  securitySchemes:
+    APIGatewayAuthorizer:
+      type: apiKey
+      name: Authorization
+      in: header
+
+  schemas:
+    ErrorSchema:
+      type: object
+      properties:
+        error_code:
+          type: integer
+          enum: [0, 1]
+        message:
+          type: string
+
+    TaskResponse:
+      type: object
+      properties:
+        result:
+          type: string
+        error:
+           $ref: "#/components/schemas/ErrorSchema"
+
+  responses:
+    BadRequest:
+      description: Invalid request data
+      content:
+        text/plain:
+          schema:
+            type: string
+    Unauthorized:
+      description: Invalid token
+      content:
+        text/plain:
+          schema:
+            type: string
+    Forbidden:
+      description: Forbidden
+      content:
+        text/plain:
+          schema:
+            type: string
+    NotFound:
+      description: Element not found
+      content:
+        text/plain:
+          schema:
+            type: string
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        text/plain:
+          schema:
+            type: string

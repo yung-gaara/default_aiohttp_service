@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "formatters": {
+        "default": {
+            "format": "%(asctime)s - %(processName)s - %(name)s - %(levelname)s - %(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "default"
+        }
+    },
+    "level": "DEBUG",
+    "loggers": {
+        "pika": {
+            "handlers": ["console"],
+            "level": "INFO"
+        },
+        "aio_pika": {
+            "handlers": ["console"],
+            "level": "INFO"
+        },
+        "h5py._conv": {
+            "handlers": ["console"],
+            "level": "INFO"
+        },
+        "webdav3": {
+            "handlers": ["console"],
+            "level": "INFO"
+        },
+        "urllib3": {
+            "handlers": ["console"],
+            "level": "INFO"
+        }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG"
+    },
+    "custom_fields": {
+        "product": "server_template",
+        "server": "test",
+        "version": "0.0.1"
+    }
+}

@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8
+    env_file:
+      - .env
+    ports:
+      - "${RABBIT_MAPPING_PORT}:5672"
+    restart: always
+
+  server:
+    image: ${SERVER_IMAGE}
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    command: "/source/wait-for-it.sh $RABBIT_HOST:$RABBIT_PORT --strict -- python3.10 bin/worker/run.py"
+
+  worker:
+    image: ${WORKER_IMAGE}
+    restart: always
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    volumes:
+      - ./wait-for-it.sh:/source/wait-for-it.sh
+    depends_on:
+      - rabbitmq
+    command: "/source/wait-for-it.sh $RABBIT_HOST:$RABBIT_PORT --strict -- python3.10 bin/worker/run.py"
